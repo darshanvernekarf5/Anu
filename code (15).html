@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Anu ❤️ - My Heart's Proposal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #ffeef8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+            color: #5e3a58;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ff6b9e" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') 12 12, auto;
+        }
+        
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.6));
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b9e, #ff8e8e);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 158, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 158, 0.6);
+        }
+        
+        .btn-primary:after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover:after {
+            left: 100%;
+        }
+        
+        .pickup-line {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            transition: all 0.4s;
+            cursor: pointer;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .pickup-line:hover {
+            transform: translateY(-10px) rotateY(10deg);
+        }
+        
+        .pickup-line:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(255,107,158,0.1) 0%, rgba(255,255,255,0) 50%);
+            pointer-events: none;
+        }
+        
+        #heartCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0.7;
+            border-radius: 50%;
+        }
+        
+        .reveal-text {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b9e, #ff8e8e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dancing-script {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .flowers-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .flower {
+            width: 60px;
+            height: 80px;
+            background-image: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a8f3e1a5-4ab7-4f8a-8a0e-ec2cbbe7e17a.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .flower:after {
+            content: "";
+            position: absolute;
+            width: 4px;
+            height: 40px;
+            background-color: #4caf50;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+        
+        .flower:hover {
+            transform: translateY(-5px) rotate(-5deg);
+        }
+        
+        .flower.active {
+            animation: grow 0.5s forwards;
+        }
+        
+        @keyframes grow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1.3); }
+        }
+        
+        .love-meter {
+            width: 80%;
+            max-width: 500px;
+            height: 40px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            margin: 2rem 0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .love-meter-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, #ff6b9e, #ff8e8e);
+            transition: width 0.5s;
+            position: relative;
+        }
+        
+        .love-meter-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .timeline {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            position: relative;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(to bottom, #ff6b9e, #ff8e8e);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            border: 4px solid #ff6b9e;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(odd):after {
+            right: -15px;
+        }
+        
+        .timeline-item:nth-child(even):after {
+            left: -15px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #ff6b9e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .video-placeholder:before {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border: 4px solid #ff6b9e;
+            cursor: pointer;
+        }
+        
+        .video-placeholder:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid #ff6b9e;
+            left: 50%;
+            top: 50%;
+            transform: translate(-13px, -15px);
+            cursor: pointer;
+        }
+        
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        .flower-particle {
+            position: absolute;
+            pointer-events: none;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+        
+        @media (max-width: 768px) {
+            .reveal-text {
+                font-size: 2rem;
+            }
+            
+            .timeline:before {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:after {
+                left: 18px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts canvas background -->
+    <div id="heartCanvas"></div>
+    
+    <!-- Music toggle -->
+    <div class="music-toggle" id="musicToggle">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6b5f2acf-af7c-4147-928c-8e339abc37cf.png" alt="Music note icon" width="24" height="24">
+    </div>
+    
+    <!-- Section 1: Initial Landing -->
+    <section class="section" id="section1">
+        <div class="floating-hearts" id="floatingHearts"></div>
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/15764dcf-9c52-4a86-a1c3-4b3b5b8b4f41.png" alt="Cute cartoon illustration of a surprised girl with heart eyes and blushing cheeks" class="rounded-full border-4 border-pink-300 mb-8 w-48 h-48 object-cover">
+        <h1 class="text-5xl font-bold mb-6 text-center text-pink-600 dancing-script">Dear Anu...</h1>
+        <p class="text-xl mb-8 text-center max-w-lg">I've created something special just for you</p>
+        <button class="btn-primary" id="startBtn">Open My Heart ❤️</button>
+    </section>
+    
+    <!-- Section 2: Pickup Line Reveal -->
+    <section class="section hidden" id="section2">
+        <h2 class="reveal-text dancing-script">Why You're Amazing</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div class="pickup-line" onclick="showNextSection()">
+                <h3 class="text-xl font-semibold mb-2">Sweet Line #1</h3>
+                <p>Are you WiFi? Because I'm feeling a connection!</p>
+            </div>
+            <div class="pickup-line" onclick="showNextSection()">
+                <h3 class="text-xl font-semibold mb-2">Sweet Line #2</h3>
+                <p>Do you have a map? I keep getting lost in your eyes.</p>
+            </div>
+            <div class="pickup-line" onclick="showNextSection()">
+                <h3 class="text-xl font-semibold mb-2">Sweet Line #3</h3>
+                <p>If you were a vegetable, you'd be a cute-cumber!</p>
+            </div>
+            <div class="pickup-line" onclick="showNextSection()">
+                <h3 class="text-xl font-semibold mb-2">Sweet Line #4</h3>
+                <p>Are you a camera? Every time I look at you, I smile!</p>
+            </div>
+        </div>
+        <button class="btn-primary" id="nextBtn2">More Sweetness</button>
+    </section>
+    
+    <!-- Section 3: Flower Bouquet -->
+    <section class="section hidden" id="section3">
+        <h2 class="reveal-text dancing-script">Grow Our Love</h2>
+        <p class="text-xl mb-8 text-center max-w-lg">Click the flowers to grow a beautiful bouquet for you!</p>
+        <div class="flowers-container" id="flowersContainer"></div>
+        <div class="love-meter">
+            <div class="love-meter-fill" id="loveMeterFill">
+                <div class="love-meter-text" id="loveMeterText">0%</div>
+            </div>
+        </div>
+        <button class="btn-primary" id="nextBtn3">Continue to My Heart</button>
+    </section>
+    
+    <!-- Section 4: Personalized Message -->
+    <section class="section hidden" id="section4">
+        <h2 class="reveal-text dancing-script">My Heart's Message</h2>
+        <div class="video-placeholder" id="videoPlaceholder">
+            <p class="text-gray-500">Tap to play personal message</p>
+        </div>
+        <p class="text-lg mb-6 text-center max-w-2xl px-4">
+            Anu, every moment with you feels like a beautiful dream I never want to wake up from. 
+            Your smile brightens my darkest days, and your laughter is my favorite melody. 
+            I cherish our conversations, our shared moments, and the way you make my heart feel so full.
+        </p>
+        <button class="btn-primary" id="nextBtn4">See What Our Future Holds</button>
+    </section>
+    
+    <!-- Section 5: Memory Timeline -->
+    <section class="section hidden" id="section5">
+        <h2 class="reveal-text dancing-script">Our Future Memories</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">First Anniversary</div>
+                    <p>Celebrating our first year together with a romantic beach getaway</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Weekend Adventures</div>
+                    <p>Discovering new cities and hidden gems together</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Daily Moments</div>
+                    <p>Morning coffee together and sunset walks</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Future Dreams</div>
+                    <p>Building a home filled with laughter and love</p>
+                </div>
+            </div>
+        </div>
+        <button class="btn-primary" id="nextBtn5">Continue to Final Question</button>
+    </section>
+    
+    <!-- Section 6: 3D Heart Interaction -->
+    <section class="section hidden" id="section6">
+        <div id="heart3dContainer" style="width: 100%; height: 50vh;"></div>
+        <h2 class="text-3xl font-bold mb-4 text-center dancing-script">My Heart Beats for You</h2>
+        <p class="text-xl mb-8 text-center max-w-lg">Try clicking or rotating the heart below!</p>
+        <button class="btn-primary" id="nextBtn6">One Last Surprise</button>
+    </section>
+    
+    <!-- Section 7: Final Proposal -->
+    <section class="section hidden" id="section7">
+        <div id="confettiContainer"></div>
+        <h2 class="reveal-text dancing-script">Will You Be Mine?</h2>
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/058f0d22-8c9e-4939-b16e-a56ba9530241.png" alt="Romantic scene with two cartoon characters holding hands under moonlight" class="mb-8 rounded-xl shadow-xl">
+        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
+            <button class="btn-primary" id="yesBtn" style="background: linear-gradient(45deg, #4caf50, #8bc34a)">YES! ❤️</button>
+            <button class="btn-primary" id="noBtn" style="background: linear-gradient(45deg, #f44336, #e91e63)">Not Sure</button>
+        </div>
+    </section>
+    
+    <!-- Section 8: Happy Ending -->
+    <section class="section hidden" id="section8">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/976710ab-4216-4854-8cab-b4afa0a1294d.png" alt="Happy cartoon couple celebrating with hearts and stars around them" class="mb-8 animate-bounce inline-block">
+        <h2 class="text-5xl font-bold mb-6 text-center text-pink-600 dancing-script">YAY! ❤️</h2>
+        <p class="text-2xl mb-4 text-center">This made my heart skip a beat!</p>
+        <p class="text-xl mb-8 text-center max-w-lg">Can't wait to create more beautiful memories with you!</p>
+        <button class="btn-primary" id="restartBtn">Play Again</button>
+    </section>
+    
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        // Global variables
+        let scene, camera, renderer, heart;
+        let flowersClicked = 0;
+        let musicPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        
+        // Initialize flowers
+        function initFlowers() {
+            const container = document.getElementById('flowersContainer');
+            const flowerCount = 12;
+            
+            for (let i = 0; i < flowerCount; i++) {
+                const flower = document.createElement('div');
+                flower.classList.add('flower');
+                flower.addEventListener('click', () => {
+                    flower.classList.add('active');
+                    createFlowerParticle(flower);
+                    
+                    flowersClicked++;
+                    const fillPercentage = Math.min(100, Math.floor(flowersClicked / flowerCount * 100));
+                    document.getElementById('loveMeterFill').style.width = `${fillPercentage}%`;
+                    document.getElementById('loveMeterText').textContent = `${fillPercentage}%`;
+                    
+                    setTimeout(() => {
+                        flower.classList.remove('active');
+                    }, 500);
+                });
+                
+                // Random slight rotation for natural look
+                gsap.set(flower, { rotation: (Math.random() - 0.5) * 20 });
+                container.appendChild(flower);
+            }
+        }
+        
+        // Create flower particles when clicked
+        function createFlowerParticle(flower) {
+            const rect = flower.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('flower-particle');
+                particle.style.width = `${Math.random() * 30 + 10}px`;
+                particle.style.height = `${Math.random() * 30 + 10}px`;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.backgroundImage = `url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a8f3e1a5-4ab7-4f8a-8a0e-ec2cbbe7e17a.png')`;
+                document.body.appendChild(particle);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                const duration = Math.random() * 1 + 0.5;
+                
+                gsap.to(particle, {
+                    x: Math.cos(angle) * distance,
+                    y: Math.sin(angle) * distance - 100,
+                    opacity: 0,
+                    rotation: Math.random() * 360,
+                    duration: duration,
+                    ease: 'power1.out',
+                    onComplete: () => particle.remove()
+                });
+            }
+        }
+        
+        // 3D Heart Animation Setup
+        function initThreeJS() {
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xfff0f5);
+            
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / (window.innerHeight * 0.5), 0.1, 1000);
+            camera.position.z = 5;
+            
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(document.getElementById('heart3dContainer').clientWidth, document.getElementById('heart3dContainer').clientHeight);
+            document.getElementById('heart3dContainer').appendChild(renderer.domElement);
+            
+            // Heart geometry
+            const heartShape = new THREE.Shape();
+            const x = 0, y = 0;
+            heartShape.moveTo(x, y + 0.25);
+            heartShape.bezierCurveTo(x, y, x - 0.25, y, x - 0.25, y + 0.25);
+            heartShape.bezierCurveTo(x - 0.25, y + 0.5, x, y + 0.75, x, y + 1.0);
+            heartShape.bezierCurveTo(x, y + 0.75, x + 0.25, y + 0.5, x + 0.25, y + 0.25);
+            heartShape.bezierCurveTo(x + 0.25, y, x, y, x, y + 0.25);
+            
+            const extrudeSettings = { depth: 0.1, bevelEnabled: true, bevelSegments: 8, steps: 2, bevelSize: 0.1, bevelThickness: 0.1 };
+            const geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0xff6b9e,
+                emissive: 0xff0055,
+                specular: 0xffffff,
+                shininess: 100,
+                flatShading: true
+            });
+            
+            heart = new THREE.Mesh(geometry, material);
+            scene.add(heart);
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+            
+            // Point light for glow effect
+            const pointLight = new THREE.PointLight(0xff8e8e, 1, 10);
+            pointLight.position.set(0, 0, 3);
+            scene.add(pointLight);
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                heart.rotation.x += 0.01;
+                heart.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            }
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = document.getElementById('heart3dContainer').clientWidth / (document.getElementById('heart3dContainer').clientHeight);
+                camera.updateProjectionMatrix();
+                renderer.setSize(document.getElementById('heart3dContainer').clientWidth, document.getElementById('heart3dContainer').clientHeight);
+            });
+            
+            // Make heart interactive
+            renderer.domElement.addEventListener('click', () => {
+                gsap.to(heart.scale, { x: 1.5, y: 1.5, z: 1.5, duration: 0.3 });
+                gsap.to(heart.scale, { x: 1, y: 1, z: 1, duration: 0.3, delay: 0.3 });
+                createConfetti();
+                
+                // Pulse point light for extra effect
+                gsap.to(pointLight, { distance: 5, duration: 0.3 });
+                gsap.to(pointLight, { distance: 10, duration: 0.3, delay: 0.3 });
+            });
+            
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+            
+            renderer.domElement.addEventListener('mousedown', () => {
+                isDragging = true;
+            });
+            
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            window.addEventListener('mousemove', (event) => {
+                if (!isDragging) return;
+                
+                const deltaMove = {
+                    x: event.clientX - previousMousePosition.x,
+                    y: event.clientY - previousMousePosition.y
+                };
+                
+                heart.rotation.x += deltaMove.y * 0.01;
+                heart.rotation.y += deltaMove.x * 0.01;
+                
+                previousMousePosition = {
+                    x: event.clientX,
+                    y: event.clientY
+                };
+            });
+        }
+        
+        // Floating hearts background
+        function createFloatingHearts() {
+            const container = document.getElementById('floatingHearts');
+            const heartCount = 25;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.top = `${Math.random() * 100}%`;
+                heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.opacity = Math.random() * 0.7 + 0.3;
+                container.appendChild(heart);
+            }
+        }
+        
+        // Confetti effect
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            container.innerHTML = '';
+            
+            const colors = ['#ff6b9e', '#ff8e8e', '#ffcce6', '#ff9eb5', '#ff6b7f'];
+            const confettiCount = 150;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = `${Math.random() * 10 + 5}px`;
+                confetti.style.opacity = Math.random() * 0.7 + 0.3;
+                container.appendChild(confetti);
+                
+                // Animation
+                const animationDuration = Math.random() * 3 + 2;
+                gsap.to(confetti, {
+                    y: window.innerHeight + 10,
+                    x: `+=${(Math.random() - 0.5) * 200}`,
+                    rotation: Math.random() * 360,
+                    duration: animationDuration,
+                    ease: 'power1.out',
+                    onComplete: () => confetti.remove()
+                });
+            }
+        }
+        
+        // Navigation between sections
+        function showNextSection() {
+            const currentSection = document.querySelector('.section:not(.hidden)');
+            const nextSection = currentSection.nextElementSibling;
+            
+            if (nextSection && nextSection.classList.contains('section')) {
+                gsap.to(currentSection, { opacity: 0, duration: 0.5, onComplete: () => {
+                    currentSection.classList.add('hidden');
+                    nextSection.classList.remove('hidden');
+                    gsap.fromTo(nextSection, { opacity: 0 }, { opacity: 1, duration: 1 });
+                    
+                    // Special init for sections
+                    if (nextSection.id === 'section3') {
+                        initFlowers();
+                    }
+                    
+                    if (nextSection.id === 'section4') {
+                        document.getElementById('videoPlaceholder').addEventListener('click', () => {
+                            alert("Personal video message would play here in a real implementation!");
+                        });
+                    }
+                    
+                    if (nextSection.id === 'section6') {
+                        initThreeJS();
+                    }
+                    
+                    if (nextSection.id === 'section7') {
+                        setInterval(createConfetti, 2000);
+                        createConfetti();
+                    }
+                    
+                    window.scrollTo(0, 0);
+                }});
+            }
+        }
+        
+        // Event listeners
+        document.getElementById('startBtn').addEventListener('click', showNextSection);
+        document.getElementById('nextBtn2').addEventListener('click', showNextSection);
+        document.getElementById('nextBtn3').addEventListener('click', showNextSection);
+        document.getElementById('nextBtn4').addEventListener('click', showNextSection);
+        document.getElementById('nextBtn5').addEventListener('click', showNextSection);
+        document.getElementById('nextBtn6').addEventListener('click', showNextSection);
+        
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            window.location.reload();
+        });
+        
+        document.getElementById('noBtn').addEventListener('click', () => {
+            createConfetti();
+            alert("That's okay! I'll keep trying to win your heart ❤️");
+            
+            // Make 'No' button move away when hovered
+            const noBtn = document.getElementById('noBtn');
+            noBtn.addEventListener('mouseenter', () => {
+                gsap.to(noBtn, {
+                    x: (Math.random() - 0.5) * 200,
+                    y: (Math.random() - 0.5) * 200,
+                    duration: 0.5,
+                    ease: 'elastic.out(1, 0.5)'
+                });
+            });
+        });
+        
+        document.getElementById('yesBtn').addEventListener('click', () => {
+            showNextSection();
+            createConfetti();
+            
+            // Play romantic sound effect
+            if (!musicPlaying) {
+                bgMusic.volume = 0.3;
+                bgMusic.play();
+                musicPlaying = true;
+            }
+        });
+        
+        document.getElementById('musicToggle').addEventListener('click', () => {
+            if (musicPlaying) {
+                bgMusic.pause();
+                document.getElementById('musicToggle').innerHTML = '<img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6b5f2acf-af7c-4147-928c-8e339abc37cf.png" alt="Music note icon" width="24" height="24">';
+            } else {
+                bgMusic.play();
+                document.getElementById('musicToggle').innerHTML = '<img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8d483c2e-a9d7-4495-b36e-fc9489fe693d.png" alt="Music note icon with slash" width="24" height="24">';
+            }
+            musicPlaying = !musicPlaying;
+        });
+        
+        // Initialize animations when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            createFloatingHearts();
+            
+            // Animate pickup lines one by one
+            gsap.utils.toArray('.pickup-line').forEach((line, i) => {
+                gsap.from(line, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.5,
+                    delay: i * 0.2
+                });
+            });
+            
+            // Heartbeat animation for the initial heart button
+            gsap.to("#startBtn", {
+                scale: 1.1,
+                duration: 0.8,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+            
+            // Cursor trail effect
+            const cursorHeart = document.createElement('div');
+            cursorHeart.classList.add('heart');
+            cursorHeart.innerHTML = '❤️';
+            cursorHeart.style.fontSize = '16px';
+            cursorHeart.style.position = 'fixed';
+            cursorHeart.style.pointerEvents = 'none';
+            cursorHeart.style.zIndex = '9999';
+            document.body.appendChild(cursorHeart);
+            
+            document.addEventListener('mousemove', (e) => {
+                gsap.to(cursorHeart, {
+                    left: e.clientX + 10,
+                    top: e.clientY + 10,
+                    duration: 0.1
+                });
+            });
+            
+            document.addEventListener('click', () => {
+                gsap.to(cursorHeart, { scale: 1.5, duration: 0.2 });
+                gsap.to(cursorHeart, { scale: 1, duration: 0.2, delay: 0.2 });
+            });
+            
+            // Prevent right clicks (just for fun)
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                alert("No right clicks allowed! This is a special message for Anu ❤️");
+            });
+        });
+    </script>
+</body>
+</html>
